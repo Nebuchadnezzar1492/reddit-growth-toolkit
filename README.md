@@ -204,3 +204,15 @@ Want to take your AI agents to the next level? Connects memory across all your a
 </p>
 
 ---
+
+## Star History
+
+<p align="center">
+<a href="https://www.star-history.com/?repos=rokpiy%2Fauto-commenter&type=date&logscale=&legend=bottom-right">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=rokpiy/auto-commenter&type=date&theme=dark&legend=bottom-right" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=rokpiy/auto-commenter&type=date&legend=bottom-right" />
+   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=rokpiy/auto-commenter&type=date&legend=bottom-right" />
+ </picture>
+</a>
+</p>

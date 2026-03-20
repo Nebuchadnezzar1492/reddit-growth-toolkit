@@ -1,0 +1,47 @@
+{
+  "accounts": [
+    {
+      "username": "your_reddit_account_1",
+      "persona": "Short description of this account's personality and tone",
+      "subreddits": ["sub1", "sub2"]
+    },
+    {
+      "username": "your_reddit_account_2",
+      "persona": "Different personality for this account",
+      "subreddits": ["sub3", "sub4"]
+    }
+  ],
+
+  "product": {
+    "name": "your-product",
+    "mention_keywords": ["your-product", "yourproduct"]
+  },
+
+  "subreddits": {
+    "niche": [
+      "your_niche_sub_1", "your_niche_sub_2"
+    ],
+    "karma_farming": [
+      "AskReddit", "meirl", "mildlyinfuriating", "MadeMeSmile",
+      "unpopularopinion", "TrueOffMyChest", "Showerthoughts",
+      "LifeProTips", "NoStupidQuestions", "TooAfraidToAsk"
+    ]
+  },
+
+  "keywords": [
+    "keyword1", "keyword2", "keyword3"
+  ],
+
+  "find_settings": {
+    "max_age_hours": 3,
+    "max_comments": 50,
+    "max_score": 3000,
+    "default_sort": "rising",
+    "result_limit": 15
+  },
+
+  "fetch_settings": {
+    "rate_limit_seconds": 2,
+    "posts_per_sub": 50
+  }
+}

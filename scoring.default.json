@@ -1,0 +1,78 @@
+{
+  "_description": "Reddit Reply Scoring System — Default scoring rules. Copy to scoring.json to customize for your product/niche.",
+
+  "_engine_usage": "The tracker engine (reddit_tracker.py) only reads 'learn_thresholds' from this file. All other fields (scoring_criteria, quality_bar_rules, format_rules, etc.) are reference material for AI comment-writing tools and human reviewers. They are NOT enforced by the engine itself.",
+
+  "scoring_criteria": [
+    {
+      "id": 1,
+      "name": "Entertainment",
+      "weight": 4,
+      "description": "THE ONLY TEST THAT MATTERS. You are a bored stranger scrolling reddit at 2am. You don't know this person. You don't care about their hobbies. Does this comment make you stop scrolling? Do you laugh, go 'huh', or feel something? If you read it and feel NOTHING, it's a 1. KILL LIST (instant 1): (1) Boring autobiography — 'i started doing X, now i do Y' with no twist. (2) Jargon dump — terms your audience doesn't know. (3) Just a statement — fact or opinion with no entertainment value. (4) Expected response — the answer everyone would give."
+    },
+    {
+      "id": 2,
+      "name": "Twist",
+      "weight": 3,
+      "description": "Every comment that gets karma has a TURN — a moment where it goes somewhere unexpected. Types: (1) Ironic reversal (2) Unexpected pivot (3) Escalation comedy (4) Reframe. No twist = no upvote."
+    },
+    {
+      "id": 3,
+      "name": "Accessibility",
+      "weight": 2,
+      "description": "Would someone who knows NOTHING about your niche enjoy this? On general subs, your comment must land for someone who has never heard of your hobby. Jargon is invisible to you but a wall to readers."
+    },
+    {
+      "id": 4,
+      "name": "Brevity",
+      "weight": 1,
+      "description": "Sweet spot ~40 words. End on the strongest line. The last sentence IS the comment."
+    },
+    {
+      "id": 5,
+      "name": "Voice",
+      "weight": 1,
+      "description": "Table stakes. Lowercase, casual, sounds human. Not the differentiator."
+    }
+  ],
+
+  "minimum_bar": "All replies must score 8+ across weighted average. If Entertainment scores below 7, the comment is KILLED regardless of weighted average.",
+
+  "stop_scroll_test": "Before scoring, read the comment as a stranger. Ask: (1) Did I laugh or smirk? (2) Did I learn something? (3) Did I feel a genuine emotion? (4) Did it go somewhere unexpected? If ALL FOUR are no, the comment is dead.",
+
+  "quality_bar_rules": [
+    "STOP-SCROLL TEST FIRST. Would a bored stranger stop scrolling? If no, kill it.",
+    "Does this comment have a TWIST? If it's just a statement or story with no turn, kill it.",
+    "Is this ACCESSIBLE? On general subs, would a non-technical person enjoy this?",
+    "WHAT DOES THIS ADD? If it restates the OP in different words, kill it.",
+    "Friction > agreement. Challenging or reframing converts better than nodding along.",
+    "In debate threads, TAKE A SIDE.",
+    "Avoid explainer mode. Story mode or joke mode only."
+  ],
+
+  "pre_show_review": [
+    "GATE 1 — STOP-SCROLL TEST: Did you laugh, learn something, or feel something unexpected? If no → kill.",
+    "GATE 2 — TWIST CHECK: Where does it go somewhere unexpected? Point to the exact sentence. Can't? → kill.",
+    "GATE 3 — BORING AUTOBIOGRAPHY CHECK: Is this just someone describing their life/hobby? → kill.",
+    "GATE 4 — ACCESSIBILITY CHECK: On a general sub, would a non-technical person get it? → kill or rewrite.",
+    "GATE 5 — EXPECTED RESPONSE CHECK: Is this what everyone would say? → kill.",
+    "Only after passing all 5 gates, score using criteria. Entertainment below 7 → kill."
+  ],
+
+  "format_rules": [
+    "1-3 sentences max (4 absolute max)",
+    "Always lowercase",
+    "Casual, conversational tone",
+    "No double dashes (--), em dashes, semicolons, colons mid-sentence",
+    "Periods and commas only",
+    "No markdown formatting in comment text",
+    "No quotation marks unless quoting someone",
+    "Present as plain copyable text",
+    "ALWAYS include thread/sub URL with each reply when presenting to user"
+  ],
+
+  "learn_thresholds": {
+    "winner_min_karma": 2,
+    "dud_max_karma": 1
+  }
+}

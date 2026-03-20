@@ -1,0 +1,8 @@
+# Instance-specific files (not committed)
+config.json
+scoring.json
+patterns.json
+data/
+
+# Fuse artifacts
+.fuse_hidden*

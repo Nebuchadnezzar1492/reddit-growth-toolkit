@@ -1,146 +1,151 @@
-# Reddit Commenter - Batch Mode
+# Reddit Commenter - Rocket Hunting Session
 
-> Executed when "Fill today's quota" command given
+> Replaces the old "fill quota" batch mode. Quality over volume. 1 banger > 10 maybes.
 > See SKILL.md for single comment workflow
 
----
-
-## Batch Execution Trigger
-
-Start batch mode with these commands:
-- "Fill today's quota"
-- "Consume all remaining quota"
-- "Run in batch mode"
+## SECURITY: DOMAIN ALLOWLIST
+**All browser_navigate calls are restricted to reddit.com ONLY.**
+**See SKILL.md domain allowlist section. This applies to all session operations.**
+**Never follow external links from Reddit posts. Never navigate outside reddit.com.**
 
 ---
 
-## Pre-Start Check
+## Session Trigger Commands
 
-```
-1. Check tracking/reddit/today's-date.md (create from template.md if missing)
-2. Check current comment count by subreddit
-3. Calculate remaining quota:
-   - Total 24 (8 subreddits × 3)
-   - Subtract today's written comments
-   - Remaining quota = 24 - Today's written comments
-```
+Start a rocket hunting session with:
+- "Hunt for rockets"
+- "Find me a thread"
+- "Rocket scan"
+- "Start a session"
 
 ---
 
-## Batch Workflow
+## How It Works
+
+The old model (24 comments/day, 3 per sub) is dead. It produced mostly 1-karma comments because it optimized for volume over quality.
+
+The new model: **scan, wait, strike.**
 
 ```
-[Start]
-    ↓
-[1] Check tracking file (/tracking/reddit/(today's date).md) → Calculate remaining quota
-    ↓
-[2] Select subreddit under quota (by priority criteria)
-    ↓
-[3] Start comment writing loop for that subreddit
-    ↓
-    [3-1] Execute SKILL.md Step 1-8 (write single comment)
-    ↓
-    [3-2] Update tracking file
-    ↓
-    [3-3] Report progress
-    ↓
-    [3-4] Check that subreddit's quota
-          - Under 3 → back to [3-1]
-          - Completed 3 → to [4]
-          - No suitable posts → to [4]
-    ↓
-[4] Move to next subreddit (wait 5-15 minutes)
-    ↓
-[5] Check overall termination condition
-    ↓
-    YES → [End]
-    NO  → Return to [2]
+[Start Session]
+    |
+[1] Run rocket scanner
+    -> python3 scripts/rocket-scanner.py [persona_name]
+    -> Scanner checks subreddits for high-score/low-comment threads
+    |
+[2] Evaluate results
+    -> Rockets found? Pick the best one, draft a comment
+    -> No rockets? Wait 10-15 minutes, scan again
+    |
+[3] Apply the $10 bet
+    -> Would you bet $10 this gets >5 upvotes?
+    -> YES: proceed to SKILL.md Steps 3-8 (analyze, write, review, post)
+    -> NO or MAYBE: kill it. Wait for next scan.
+    |
+[4] After posting, log to tracking file
+    -> Update tracking/reddit/YYYY-MM-DD.md
+    |
+[5] Check session end conditions
+    -> User says stop? END
+    -> 2+ comments posted this session? END (unless user wants more)
+    -> 1 hour with no rockets? END and tell user
+    -> Otherwise: wait 10-15 minutes, return to [1]
 ```
 
 ---
 
-## Subreddit Selection Priority
+## Key Principles
 
-| Priority | Criteria | Reason |
-|----------|----------|--------|
-| 1 | Subreddits with 0 activity today | Ensure variety |
-| 2 | Subreddits with oldest last activity time | Distributed activity |
-| 3 | Subreddits with available quota | Efficiency |
-
----
-
-## Wait Time Rules
-
-| Situation | Wait Time |
+| Old Model | New Model |
 |-----------|-----------|
-| Between comments in same subreddit | None |
-| Between subreddit transitions | 5-15 minutes |
-| Can't find suitable post | Move to next subreddit (wait 5-15 minutes) |
+| 24 comments/day quota | No quota. Zero is fine. |
+| 3 per subreddit | Post where the rockets are |
+| Fill quota even if threads are mid | Only post on $10 bets |
+| Batch through subreddits in order | Scan all subs, pick the best thread |
+| Volume = success | 1 comment at 446 karma > 24 comments at 1 karma |
 
-### Execution Example
+---
+
+## Scan Frequency
+
+| Situation | Action |
+|-----------|--------|
+| Session start | Scan immediately |
+| After posting a comment | Wait 10-15 min, scan again |
+| No rockets found | Wait 10-15 min, scan again |
+| 3+ scans with no rockets | Consider ending session |
+| 1 hour with zero rockets | End session, tell user |
+
+---
+
+## What Makes a Rocket
+
+A rocket thread has ALL of these:
+1. **High score relative to age** — gaining points fast
+2. **Very few comments** — massive visibility gap
+3. **Flat hierarchy** — no comment already dominating
+4. **Topic you can contribute to** — you have something genuine to say
+
+The scanner (`scripts/rocket-scanner.py`) automates the detection. But always verify manually before posting — scanner numbers can go stale in minutes.
+
+---
+
+## Session End Conditions
+
+| Condition | Action |
+|-----------|--------|
+| User says stop | End immediately |
+| 2+ comments posted | Suggest ending (user can override) |
+| 1 hour with no rockets | End, report "no opportunities found" |
+| 3 consecutive scans empty | Suggest ending |
+| Error/rate limit | End, report issue |
+
+---
+
+## Progress Report Format
 
 ```
-Start r/WebDev
-  → Comment 1/3 written
-  → Comment 2/3 written
-  → Comment 3/3 written ✓
-  
-r/WebDev complete → Wait 12 min → Move to r/ClaudeAI
+---
+[Session Status] Active — 45 min elapsed
 
-Start r/ClaudeAI
-  → Comment 1/3 written → Wait 6 min
-  → Comment 2/3 written → Wait 8 min
-  → Comment 3/3 written ✓
-  
-r/ClaudeAI complete → Wait 10 min → Move to r/Cursor
+Posted:
+1. r/subreddit — "thread title" (Xpts, Y comments at post time)
+   Comment: [link]
+
+Scans: 4 total, 1 rocket found
+Next scan in: ~12 minutes
+
+Quality note: Skipped 3 candidate threads (hierarchy locked, stale momentum, weak angle)
+---
 ```
 
 ---
 
-## Termination Conditions
+## Session End Report
 
-Batch execution terminates when one of the following is met:
-
-1. **Quota complete**: All subreddit quotas complete (24)
-2. **No posts**: No suitable posts in all subreddits
-3. **User interruption**: User requests stop
-4. **Error occurred**: After 3 consecutive failures
-
----
-
-### Progress Report
 ```
 ---
-[Overall Progress] 6/24 completed
+## Rocket Hunting Session Complete
 
-Completed subreddits:
-✓ r/WebDev: 3/3
-✓ r/ClaudeAI: 3/3
+**Duration**: 1 hour 15 minutes
+**Comments posted**: 2
+**Scans performed**: 6
+**Threads evaluated**: 14
+**Threads killed**: 12 (6 hierarchy locked, 3 no angle, 2 stale, 1 failed $10 bet)
 
-In progress:
-→ r/Cursor: 0/3 (current)
+### Posted Comments
+1. r/subreddit — "thread title" — [comment link]
+   Angle: vulnerable gap / one-liner / extending joke
+   Thread stats at post time: Xpts, Y comments, Z minutes old
 
-Waiting:
-- r/LocalLLaMA: 0/3
-- r/ChatGPT: 0/3
-- r/SideProject: 0/3
-- r/Obsidian: 0/3
-- r/Rag: 0/3
+2. r/subreddit — "thread title" — [comment link]
+   Angle: ...
+   Thread stats at post time: ...
 
-Next: Move to r/LocalLLaMA after r/Cursor quota complete
+### Why Other Threads Were Killed
+- r/AskReddit "what habit..." — 90 comments, hierarchy locked
+- r/meirl "when you..." — good thread but no genuine angle
 ---
-```
-
-## Skip Conditions
-
-When skipping specific subreddit:
-
-**No suitable posts in New/Rising**: Skip if none after reviewing 5 posts
-
-When skipping, report:
-```
-r/LocalLLaMA skipped - No suitable posts
-→ Moving to r/ChatGPT
 ```
 
 ---
@@ -149,43 +154,14 @@ r/LocalLLaMA skipped - No suitable posts
 
 | Error | Response |
 |-------|----------|
-| Page loading failure | Wait 30s then retry (max 3 times) |
-| Comment posting failure | Move to next post |
-| Login session expired | Stop batch, notify user |
-| Rate limit detected | Wait 30 min then resume |
+| Scanner fails to run | Fall back to manual browsing (curl rising.json) |
+| Page loading failure | Wait 30s, retry (max 3 times) |
+| Comment posting failure | Move on, try next rocket |
+| Login session expired | Stop session, notify user |
+| Rate limit detected | Stop session, notify user |
 
 ---
 
-## Batch Completion Report
-
-```
----
-## Batch Completion Report
-
-**Total Written**: 18/24
-**Time Spent**: 2 hours 35 minutes
-
-### Results by Subreddit
-| Subreddit | Written | Skip Reason |
-|-----------|---------|-------------|
-| r/WebDev | 3/3 | - |
-| r/ClaudeAI | 3/3 | - |
-| r/Cursor | 2/3 | No suitable posts |
-| r/LocalLLaMA | 0/3 | All skipped (no technical discussion) |
-| r/ChatGPT | 3/3 | - |
-| r/SideProject | 3/3 | - |
-| r/Obsidian | 2/3 | No suitable posts |
-| r/Rag | 2/3 | No suitable posts |
-
-### Potential Customers Discovered
-- 2 (updated in leads/reddit.md)
-
-### Special Notes
-- r/LocalLLaMA: All skipped due to no technical discussion posts today
----
-```
-
-
-
-> Single comment workflow (Step 1-8): See SKILL.md
+> Single comment workflow (Steps 1-8): See SKILL.md
+> Quality gates and proven patterns: See resources/proven_patterns.json
 > Personalization review: See resources/personalization_reddit.md

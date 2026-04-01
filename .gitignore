@@ -11,9 +11,15 @@ tracking/reddit/*.md
 leads/*.md
 !leads/reddit.md
 
-# Personal personalization files (users should create their own)
+# Personal overrides — these contain YOUR data, not pushed to GitHub
+# The repo ships *.template versions; copy to the real name and customize
+# subreddits.md is the public template; your real personas go in subreddits.local.md
+.claude/skills/reddit-commenter/resources/subreddits.local.md
+.claude/skills/reddit-commenter/resources/proven_patterns.local.json
 .claude/skills/reddit-commenter/resources/personalization_reddit.md.personal
 .claude/skills/reddit-commenter/resources/product.md.personal
+scripts/personas.local.py
+scripts/__pycache__/
 
 # Environment settings
 .env

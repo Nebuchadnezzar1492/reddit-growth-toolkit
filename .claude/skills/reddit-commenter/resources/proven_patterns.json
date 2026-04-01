@@ -1,0 +1,253 @@
+{
+  "_description": "Reddit Reply Scoring System — battle-tested with real karma data. This is the single source of truth for comment quality, thread selection, and proven patterns. Updated as real karma data comes in.",
+
+  "scoring_criteria": [
+    {
+      "id": 1,
+      "name": "Entertainment",
+      "weight": 4,
+      "description": "THE ONLY TEST THAT MATTERS. You are a bored stranger scrolling reddit at 2am. You don't know this person. You don't care about their hobbies, their job, or their setup. Does this comment make you stop scrolling? Do you laugh, go 'huh', or feel something? If you read it and feel NOTHING, it's a 1. A comment can be original, well-voiced, perfectly formatted, and still be completely boring. Boring = 1 karma, always. KILL LIST (instant 1 regardless of other scores): (1) Boring autobiography — 'i started doing X, now i do Y' with no twist. Nobody cares about your hobby progression. (2) Jargon dump — using terms your audience doesn't know. Technical terms in a general sub = invisible. (3) Just a statement — stating a fact or opinion with no entertainment value. (4) Expected response — the answer literally everyone would give to this type of question."
+    },
+    {
+      "id": 2,
+      "name": "Twist",
+      "weight": 3,
+      "description": "Every comment that gets karma has a TURN — a moment where it goes somewhere you didn't expect. Without a turn, it's just a statement floating in the void. Types that work: (1) Ironic reversal — spent money automating everything, apartment still a mess because none of it picks up clothes (2) Unexpected pivot — starts with expected take, then goes somewhere nobody in the thread went (3) Escalation — each sentence raises the stakes, last line is the funniest (4) Reframe — flipping the question on its head, making the reader see it differently (5) Vulnerable gap — describe something real and slightly dumb, leave the obvious fix unsaid, let the audience deliver the punchline. Not every comment needs a self-contained twist — sometimes the twist is what happens AFTER you post."
+    },
+    {
+      "id": 3,
+      "name": "Accessibility",
+      "weight": 2,
+      "description": "Would someone who knows NOTHING about your niche enjoy this? A spice rack joke works for everyone on earth. Niche jargon works for 0.1% of reddit. On general subs (AskReddit, meirl, funny, MadeMeSmile), your comment must land for a 25 year old who has never heard of your hobby. Jargon is invisible to you but a brick wall to readers. If the joke requires domain knowledge to understand, it fails. On niche subs (selfhosted, homelab), domain terms are fine."
+    },
+    {
+      "id": 4,
+      "name": "Brevity",
+      "weight": 1,
+      "description": "Length follows from the content, not a target. A one-liner can be 8 words. A story can be 4 sentences. If every reply you write is the same length, you're templating, not writing. End on the strongest line, not the weakest. The last sentence IS the comment — everything before it is setup. If the last line is weak, the whole comment is weak."
+    },
+    {
+      "id": 5,
+      "name": "Voice",
+      "weight": 1,
+      "description": "Table stakes. Lowercase, casual, sounds human. Not the differentiator. A perfectly voiced boring comment is still boring."
+    }
+  ],
+
+  "minimum_bar": "All replies must score 8+ across weighted average before presenting to user. BUT: if Entertainment scores below 7, the comment is KILLED regardless of weighted average. A boring comment with perfect format is still boring.",
+
+  "stop_scroll_test": "Before scoring, read the comment as a stranger who doesn't know or care about you. Ask: (1) Did I laugh, smirk, or exhale through my nose? (2) Did I learn something I didn't know? (3) Did I feel a genuine emotion? (4) Did the comment go somewhere I didn't expect? If the answer to ALL FOUR is no, the comment is dead. Do not score it. Write a new one.",
+
+  "thread_selection_process": {
+    "_note": "NOT a checklist. A thinking process. Before presenting ANY thread, answer these questions honestly. If you can't confidently answer YES to all three, don't present it.",
+
+    "question_1_visibility": "WILL ANYONE SEE MY COMMENT? Look at the comment hierarchy, not just the count. 50 comments all at 1pt = flat field, you have a chance. 20 comments with the top at 80pts = hierarchy locked, you're invisible at the bottom. Check: are top comments already scored? If yes, you're late. If all at 1pt, the window is open regardless of count.",
+
+    "question_2_momentum": "IS THIS THREAD STILL GROWING? Score / age = velocity. A thread gaining 3pts/min is alive. A thread that was gaining 3pts/min and is now flat is dead. Look at the TREND, not the snapshot. A 200pt thread at 20min is better than a 800pt thread at 3hrs because the first is accelerating and the second already peaked.",
+
+    "question_3_engagement": "WILL THIS COMMENT START A CONVERSATION? Winners both had vulnerable gaps — something people wanted to respond to. Floppers were closed statements. Before drafting, ask: what will people REPLY to this with? If you can't picture 3 different replies, the comment is dead on arrival.",
+
+    "the_bet": "Would you bet $10 this comment gets >5 upvotes? If not, why are you presenting it? This is the final gut check. If the thread looks iffy or the comment feels like 'this might work' instead of 'this will work', kill it and find something better. Presenting weak options wastes everyone's time.",
+
+    "failure_patterns": {
+      "crowded_threads": "3/3 comments on crowded threads got 1 upvote. Technology thread at 80 comments = 1 view. AskReddit at 90 comments = 12 views. Both had locked hierarchies — top comments already scored. Thread score means nothing if you're at position #80.",
+      "statements_die": "Observation-only comment got 16 views, 0 upvotes. People SAW it and didn't care. It was just an observation — nothing to respond to, nothing to argue with, nothing to build on. Compare: vulnerable gap comments consistently get 29-42 karma because people HAD to respond.",
+      "soft_signals_get_ignored": "Rules like 'under 30 ideal, under 50 acceptable' were followed and still produced failures posting into 80-90 comment threads. Soft rules don't work. The thinking process above forces engagement with WHY a thread is good, not just WHETHER it passes a number."
+    }
+  },
+
+  "proven_patterns": {
+    "winners": [
+      {
+        "label": "Cloudflare human verification — existential doubt",
+        "karma": 446,
+        "views": 10717,
+        "conv": "4.2%",
+        "why": "ROCKET THREAD + UNIVERSAL EXPERIENCE. Thread was at 180pts with only 2 comments when posted — massive visibility gap. Comment was one line, universally relatable (everyone hates captchas), with a twist (annoyed to existential doubt). First real $10 bet — only presented because of genuine belief. The lesson: wait for a thread you'd actually bet on instead of forcing weak options.",
+        "pattern": "ROCKET THREAD + ONE-LINER"
+      },
+      {
+        "label": "Untested backups — niche expertise",
+        "karma": 42,
+        "why": "GENUINE EXPERTISE on a niche sub. Shared a real take that resonated with the community. Not a joke — real value. On niche subs, expertise beats humor."
+      },
+      {
+        "label": "No phone in bedroom — time guessing",
+        "karma": 29,
+        "branch_karma": "300+",
+        "why": "CONVERSATION STARTER. Described a specific, slightly dumb real experience (lying awake guessing the time). Left an obvious gap (clocks exist) that people WANTED to fill. Top reply got 143 pts. The comment's job wasn't to be the funniest — it was to start a thread. Imperfection > cleverness. Community delivered the jokes.",
+        "pattern": "VULNERABLE GAP"
+      },
+      {
+        "label": "Roommate automation story",
+        "karma": 23,
+        "views": 1000,
+        "conv": "2.3%",
+        "why": "IRONIC REVERSAL. Spent $2K automating everything, apartment still a mess because none of it picks up clothes. The twist makes it funny. Without the clothes line, it's just 'my roommate bought stuff' = boring."
+      },
+      {
+        "label": "Car touchscreens data angle",
+        "karma": 11,
+        "views": 35,
+        "conv": "14.3%",
+        "why": "UNEXPECTED PIVOT. Starts with expected take (cheaper to build screens), then goes somewhere nobody in the thread went (they're logging every tap and selling it). The pivot IS the comment."
+      },
+      {
+        "label": "Driving lean-forward one-liner",
+        "karma": 81,
+        "why": "ONE-LINER matching thread energy. Short, punchy, matched what the thread was already feeling. No overthinking."
+      },
+      {
+        "label": "Navy/bank extending the joke",
+        "karma": 15,
+        "why": "EXTENDING THE JOKE. Didn't try to start a new bit — extended what was already funny in the thread's lane. Played the game the thread was already playing."
+      },
+      {
+        "label": "Contrarian 'nobody thinking about you' take",
+        "karma": 5,
+        "views": 119,
+        "conv": "3.4%",
+        "why": "REFRAME. Everyone in the thread agreeing with the premise. This comment challenges it. Friction = people react."
+      },
+      {
+        "label": "Thermos/dad's coffee on BuyItForLife",
+        "karma": 28,
+        "why": "SENSORY/EMOTIONAL DETAIL on a story sub. Not a product rec — a memory. Specific sensory details (smell, feel) that make the reader feel something. Emotional resonance on subs that value stories."
+      },
+      {
+        "label": "Free trial escalation",
+        "karma": 5,
+        "why": "ESCALATION COMEDY. $10 trial becomes $14,000 bill becomes boss was calm becomes 'which was somehow worse'. Each sentence raises the stakes. The last line is the funniest."
+      }
+    ],
+    "floppers": [
+      {
+        "label": "Jargon-heavy homelab autobiography",
+        "karma": 0,
+        "why": "BORING AUTOBIOGRAPHY. 'Started wiping an old machine, 3 years later I have 14 containers.' Zero twist. Zero entertainment. Uses jargon nobody on AskReddit knows or cares about. Scored 8.8 internally which exposed fundamental flaw in old scoring system."
+      },
+      {
+        "label": "AskReddit 'automated my job'",
+        "karma": 1,
+        "views": 63,
+        "why": "EXPECTED RESPONSE. THE most predictable answer to 'how do you slack at work'. Scored high on old criteria because it had numbers and a punchline structure. But it's the answer everyone would give = boring."
+      },
+      {
+        "label": "Generic 'i use X' replies",
+        "karma": 1,
+        "why": "JUST A STATEMENT. No twist, no joke, no emotion. 'I use X and it works' — who cares?"
+      },
+      {
+        "label": "Cabinet anger — thread too crowded",
+        "karma": 1,
+        "views": 12,
+        "why": "Thread had 90 comments when posted. Buried immediately. Comment was fine (specific, relatable) but nobody saw it. THREAD SELECTION FAILURE."
+      },
+      {
+        "label": "Data centers — thread too crowded",
+        "karma": 1,
+        "views": 1,
+        "why": "ONE VIEW. Thread had 80 comments when posted. Completely invisible. Good analogy wasted on a dead position. THREAD SELECTION FAILURE."
+      },
+      {
+        "label": "Strawberries — just a statement",
+        "karma": 1,
+        "views": 16,
+        "why": "Thread had 38 comments, got 16 views — so people SAW it. But 0 upvotes means the comment itself was weak. Just a statement with a cute image. No vulnerable gap, no conversation starter, nothing to respond to. Views without upvotes = comment quality failure."
+      },
+      {
+        "label": "Monitor recommendation",
+        "karma": 1,
+        "views": 8,
+        "why": "Said what everyone else said. Zero entertainment value."
+      },
+      {
+        "label": "Dating in 30s",
+        "karma": 1,
+        "views": 23,
+        "why": "Safe, agreeable, generic. Nothing that makes you stop scrolling."
+      },
+      {
+        "label": "Adulting vacation cycle",
+        "karma": 1,
+        "views": 6,
+        "why": "Restated OP's point in different words. No twist, no new information."
+      },
+      {
+        "label": "Boss linkedin boat — buried on r/all",
+        "karma": 1,
+        "views": 1,
+        "why": "Posted on r/all post already at 6.6K pts — buried at comment #150+."
+      },
+      {
+        "label": "Shower fence-sit on debate sub",
+        "karma": 1,
+        "views": 10,
+        "why": "Debate thread but didn't take a side. No friction, no entertainment."
+      },
+      {
+        "label": "Self-improvement explainer mode",
+        "karma": 1,
+        "views": 6,
+        "why": "Lecturing. 'You're not looking for a system' = condescending, not entertaining."
+      }
+    ],
+    "key_learnings": [
+      "ENTERTAINMENT IS THE ONLY THING THAT MATTERS. Format, originality, voice — all secondary. If a stranger wouldn't stop scrolling, it's dead.",
+      "Every winner has a TWIST. Ironic reversal, unexpected pivot, escalation, or reframe. No twist = 1 karma.",
+      "Boring autobiography is the #1 failure mode. 'I started X, now I do Y' without a punchline that makes people laugh = invisible.",
+      "Jargon kills comments on general subs. Translate niche terms to human language or pick a different angle.",
+      "The old scoring system measured FORMAT (word count, punchline structure, numbers) and rated boring comments 8+. Format does not equal entertainment.",
+      "Friction/contrarian converts 3-4x better than agreement (3.4% vs 0.8%)",
+      "Post selection is 70% of the game — 5/10 comments got <25 views regardless of quality",
+      "r/all posts are traps — ratio data goes stale in minutes, you end up at comment #150",
+      "Expected responses fail even when they check every format box",
+      "The last sentence IS the comment. Everything before it is setup. If the punchline doesn't land, nothing lands.",
+      "Thread quality matters as much as comment quality. High-traffic image/video posts are karma traps — audience upvotes 'so cute' and scrolls past actual wit. Pick threads where people are ENGAGING (story threads, debates, discussions), not reacting to images.",
+      "CONVERSATION STARTERS > SELF-CONTAINED JOKES. Vulnerable gap comment (29 karma, 300+ branch karma) worked because it left an obvious gap for people to roast. Sometimes the comment's job is to start a thread, not be the funniest thing.",
+      "VULNERABLE GAP pattern: describe a real, slightly dumb experience and leave the obvious solution unsaid. People WANT to point it out, which drives replies. Replies drive visibility. Visibility drives upvotes on your comment too.",
+      "Constructed AI jokes fail. Every 'setup then build then punchline' draft got killed. The winner was just describing what happened — no punchline, no structure, just truth. The humor was emergent, not engineered.",
+      "Branch karma matters more than comment karma. A comment with 29 pts that spawns a 300+ pt branch is worth more than a 50pt comment with zero replies.",
+      "COMMENT HIERARCHY > COMMENT COUNT. 50 comments all at 1pt = flat field, you can win. 20 comments with top at 80pts = hierarchy locked, you're invisible. Check whether top comments are already scored before posting.",
+      "Views without upvotes = comment quality failure. People SAW it and didn't care. A statement with no vulnerable gap or conversation hook is dead even with visibility.",
+      "THINK before presenting. Answer: will it be seen? is the thread still growing? will people reply? If the answer to any is 'maybe', find a better thread.",
+      "THE $10 BET IS NOT OPTIONAL. The 446-karma comment was the first time we only presented something we genuinely believed in. Every previous batch had 'gambles' and 'maybes' — those all flopped. If you wouldn't bet $10 on it, DON'T PRESENT IT.",
+      "ROCKET THREADS: High score with almost no comments = massive visibility gap. Being early on a rocket with a good one-liner is the highest-ROI play."
+    ]
+  },
+
+  "quality_bar_rules": [
+    "STOP-SCROLL TEST FIRST. Before anything else: would a bored stranger stop scrolling to read this? If no, kill it immediately.",
+    "Does this comment have a TWIST? Ironic reversal, unexpected pivot, escalation, reframe? If it's just a statement or a story with no turn, kill it.",
+    "Is this ACCESSIBLE? On general subs, would a non-technical 25 year old enjoy this? If it requires niche knowledge to understand, rewrite it in human terms or pick a different angle.",
+    "WHAT DOES THIS ADD? If comment restates the OP's point in different words, kill it.",
+    "Friction > agreement. Challenging or reframing converts 3-4x better than nodding along.",
+    "In debate threads (unpopularopinion, AITA), TAKE A SIDE. Fence-sitting = invisible.",
+    "Avoid explainer mode. 'You're really looking for X' = lecturing. Story mode or joke mode only.",
+    "NEVER shill or recommend external websites/services/apps unless thread specifically asks for tool recs"
+  ],
+
+  "pre_show_review": [
+    "GATE 0 — THREAD THINKING (BEFORE WRITING ANYTHING): Answer the 3 questions in thread_selection_process. Visibility (hierarchy locked?), Momentum (still growing?), Engagement (will this start a conversation?). Show your reasoning. If you can't confidently say yes to all three, kill the thread and find another. If nothing passes, tell the user.",
+    "GATE 1 — STOP-SCROLL TEST: Read the comment as a bored stranger. Did you laugh, learn something, or feel something unexpected? If no, kill and rewrite. Do NOT proceed to scoring.",
+    "GATE 2 — TWIST CHECK: Where does this comment go somewhere unexpected? Point to the exact sentence. If you can't point to it, kill and rewrite.",
+    "GATE 3 — BORING AUTOBIOGRAPHY CHECK: Is this just someone describing their life/hobby/routine? 'I started X, now I do Y' without a punchline that actually makes people laugh? Kill.",
+    "GATE 4 — ACCESSIBILITY CHECK: On a general sub, would a non-technical person get it? Any jargon that requires domain knowledge? Rewrite or kill.",
+    "GATE 5 — EXPECTED RESPONSE CHECK: Is this the answer everyone would give to this type of question? If it's the first thing that comes to mind, it's the first thing that came to everyone's mind. Kill.",
+    "Only after passing all 5 gates, score using the 5 criteria above.",
+    "If weighted average below 8, or Entertainment below 7, kill.",
+    "Compare against proven_patterns — does it match winners (twist, accessible, entertaining) or floppers (boring autobiography, jargon, expected response, just a statement)?"
+  ],
+
+  "format_rules": [
+    "Length follows from content. A zinger is 8 words. A story is 4 sentences. If two replies are the same length, one is wrong.",
+    "Always lowercase",
+    "Casual, conversational tone",
+    "No double dashes (--), em dashes, semicolons, colons mid-sentence",
+    "Periods and commas only",
+    "No markdown formatting in comment text",
+    "No quotation marks unless quoting someone",
+    "Present as plain copyable text",
+    "ALWAYS include thread/sub URL with each reply or post when presenting to user. NO EXCEPTIONS."
+  ]
+}

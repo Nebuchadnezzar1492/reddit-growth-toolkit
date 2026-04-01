@@ -6,3 +6,51 @@ data/
 
 # Fuse artifacts
 .fuse_hidden*
+
+# Personal/company data
+Products/
+
+# Actual activity data (keep templates)
+tracking/reddit/*.md
+!tracking/reddit/template.md
+
+# Actual leads data
+leads/*.md
+!leads/reddit.md
+
+# Personal overrides — these contain YOUR data, not pushed to GitHub
+# subreddits.md is the public template; your real personas go in subreddits.local.md
+.claude/skills/reddit-commenter/resources/subreddits.local.md
+.claude/skills/reddit-commenter/resources/proven_patterns.local.json
+.claude/skills/reddit-commenter/resources/personalization_reddit.md.personal
+.claude/skills/reddit-commenter/resources/product.md.personal
+scripts/personas.local.py
+scripts/__pycache__/
+
+# Environment settings
+.env
+.env.local
+*.env
+
+# MCP
+.mcp/cache/
+Perplexity-Comet-MCP/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Backup files
+*_backup/
+*.backup
+*.bak
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# Node.js
+node_modules/
+npm-debug.log*

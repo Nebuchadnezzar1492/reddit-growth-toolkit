@@ -11,6 +11,7 @@ Usage:
 """
 
 import json
+import os
 import sys
 import time
 import urllib.request
@@ -28,7 +29,35 @@ CONFIG = {
     "sort": "rising",           # which reddit endpoint to hit
     "limit": 25,                # posts per subreddit
     "retry_after_429": 60,      # seconds to wait on rate limit
+    "seen_file": os.path.join(os.path.dirname(os.path.abspath(__file__)), ".rocket-seen.json"),
+    "seen_ttl_hours": 24,       # forget threads after this many hours
 }
+
+# Subreddits to skip entirely
+EXCLUDED_SUBS = {"WhitePeopleTwitter"}
+
+
+# ─── DEDUPLICATION ────────────────────────────────────────────────────
+def load_seen():
+    """Load seen thread IDs from file."""
+    try:
+        with open(CONFIG["seen_file"]) as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+
+def save_seen(seen):
+    """Save seen thread IDs to file."""
+    with open(CONFIG["seen_file"], "w") as f:
+        json.dump(seen, f)
+
+
+def clean_seen(seen):
+    """Remove entries older than seen_ttl_hours."""
+    now = time.time()
+    ttl = CONFIG["seen_ttl_hours"] * 3600
+    return {k: v for k, v in seen.items() if now - v < ttl}
 
 # ─── PERSONAS & SUBREDDITS ────────────────────────────────────────────
 # Load from local config if it exists (gitignored), otherwise use defaults.
@@ -85,21 +114,21 @@ PERSONAS = _load_personas()
 
 
 def all_subs_for_persona(persona):
-    """Get flat list of subs for a persona."""
+    """Get flat list of subs for a persona, minus exclusions."""
     groups = PERSONAS.get(persona, {})
     subs = []
     for group in groups.values():
         subs.extend(group)
-    return subs
+    return [s for s in subs if s not in EXCLUDED_SUBS]
 
 
 def all_unique_subs():
-    """Get deduplicated set of all subreddits across all personas."""
+    """Get deduplicated set of all subreddits across all personas, minus exclusions."""
     subs = set()
     for persona in PERSONAS.values():
         for group in persona.values():
             subs.update(group)
-    return sorted(subs)
+    return sorted(subs - EXCLUDED_SUBS)
 
 
 def persona_for_sub(sub):
@@ -209,19 +238,30 @@ def scan(persona_filter=None):
     total = len(subs_to_scan)
     rockets = []
 
+    # Load and clean seen threads
+    seen = clean_seen(load_seen())
+
     for i, sub in enumerate(subs_to_scan):
         print(f"  Scanning r/{sub} ({i+1}/{total})...", file=sys.stderr, end="", flush=True)
         posts = fetch_rising(sub)
         found = 0
         for post in posts:
+            # Dedup: skip threads we've already reported
+            thread_id = post.get("id", "")
+            if thread_id in seen:
+                continue
             result = score_post(post)
             if result:
                 rockets.append(result)
+                seen[thread_id] = time.time()
                 found += 1
         print(f" {found} rockets" if found else " -", file=sys.stderr)
 
         if i < total - 1:
             time.sleep(CONFIG["request_delay"])
+
+    # Save seen threads
+    save_seen(seen)
 
     # group by persona
     grouped = {name: [] for name in PERSONAS}
